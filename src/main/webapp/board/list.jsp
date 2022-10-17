@@ -8,7 +8,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>게시판</title>
+    <title>게시판 - 목록</title>
     <%
         BoardDAO boardDAO = new BoardDAO();
         List<CategoryDTO> categoryList = boardDAO.categoryList();
@@ -24,6 +24,8 @@
             <div class="h1"> 게시판 - 목록</div>
         </div>
     </div>
+    <br/>
+    <br/>
     <div class="card">
         <div class="card-body">
             <div class="row">
@@ -33,7 +35,7 @@
                     <input type="date" class="form-control input-group-sm" id="board_register_date_start" aria-describedby="span_board_register_date_start">
                     <span class="input-group-text" id="span_board_register_date_end"><i class="fa-solid fa-calendar-days"> 종료일</i></span>
                     <input type="date" class="form-control input-group-sm" id="board_register_date_end" aria-describedby="span_board_register_date_end">
-                    <select name="category_num" class="form-select" aria-label="Default select example">
+                    <select name="categoryNum" class="form-select" aria-label="Default select example">
                         <option value="0">==선택하세요==</option>
                         <%
                             for (CategoryDTO categoryDTO : categoryList){
@@ -105,7 +107,9 @@
                 </ul>
             </nav>
             <div class="d-grid gap-2">
-                <button class="btn btn-outline-dark" type="button">글 작성</button>
+                <button class="btn btn-outline-dark" type="button" onclick="location.href='./write.jsp'">글 작성</button>
+                <button class="btn btn-outline-dark" type="button" onclick="location.href='./view.jsp'">보기</button>
+                <button class="btn btn-outline-dark" type="button" onclick="location.href='./modify.jsp'">수정</button>
             </div>
         </div>
     </div>
