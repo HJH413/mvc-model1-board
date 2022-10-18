@@ -15,6 +15,49 @@
 
     %>
     <%@ include file="include/source.jsp" %>
+    <script type="text/javascript">
+
+        /**
+         *  submit 하기전 유효성 검증하는 함수
+         */
+        const boardSaveSubmitCheckFunction = () => {
+            let categoryName = document.getElementById('categoryName').value;
+
+            if (categoryName === '0') {
+                alert("카테고리를 선택하세요.");
+                return false;
+            }
+
+            if (boardPasswordCheckFunction() === false) {
+                return false;
+            }
+
+        }
+
+        /**
+         * 비밀번호 유효성 검증하는 함수
+         * @returns {boolean}
+         */
+        const boardPasswordCheckFunction = () => {
+            let boardPassword = document.getElementById('boardPassword').value;
+            let boardPasswordCheck = document.getElementById('boardPasswordCheck').value;
+            let boardPasswordCheckText = document.getElementById('boardPasswordCheckText');
+            const check = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{4,16}$/ //  영문자 특문
+            if(boardPassword !== boardPasswordCheck){
+                boardPasswordCheckText.innerHTML = "<div style='color:red'>" + '비밀번호 확인' + "</div>"
+                document.getElementById("boardSubmit").setAttribute("disabled", "")
+                return false
+            } else if (!(check.test(boardPassword))){
+                boardPasswordCheckText.innerHTML = "<div style='color:red'>" + '영문/숫자/특문 포함 및 4자리 이상 16자리 미만' + "</div>"
+                document.getElementById("boardSubmit").setAttribute("disabled", "")
+                return false
+            } else {
+                boardPasswordCheckText.innerHTML = "<div style='color:red'>" + '' + "</div>"
+                document.getElementById("boardSubmit").removeAttribute("disabled")
+                return true
+            }
+        }
+    </script>
 </head>
 <body>
 <div class="container-fluid">
@@ -25,14 +68,14 @@
     </div>
     <br/>
     <br/>
-    <form>
+    <form action="./api/save.jsp" method="post" onsubmit="return boardSaveSubmitCheckFunction();">
         <div class="card">
             <div class="card-body">
                 <div class="mb-3 row">
                     <label for="categoryName" class="col-sm-2 col-form-label">카테고리</label>
                     <div class="col-sm-5">
                         <select id="categoryName" name="categoryNum" class="form-select"
-                                aria-label="Default select example">
+                                aria-label="Default select example" required>
                             <option value="0">==선택하세요==</option>
                             <%
                                 for (CategoryDTO categoryDTO : categoryList) {
@@ -47,30 +90,32 @@
                 </div>
                 <div class="mb-3 row">
                     <label for="boardWriter" class="col-sm-2 col-form-label">작성자 * </label>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" id="boardWriter" name="boardWriter">
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="boardWriter" name="boardWriter" minlength="3" maxlength="4" required>
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="boardPassword" class="col-sm-2 col-form-label">비밀번호 * </label>
-                    <div class="col-sm-5">
-                        <input type="password" class="form-control" id="boardPassword" name="boardPassword">
+                    <div class="col-sm-2">
+                        <input type="password" class="form-control" id="boardPassword" name="boardPassword" minlength="4" maxlength="15" placeholder="비밀번호" required>
                     </div>
-                    <div class="col-sm-5">
-                        <input type="password" class="form-control" id="boardPassword2" name="boardPassword2">
+                    <div class="col-sm-2">
+                        <input type="password" class="form-control" id="boardPasswordCheck" name="boardPassword2" minlength="4" maxlength="15" placeholder="비밀번호 확인" onblur="boardPasswordCheckFunction()" required>
+                    </div>
+                    <div class="col-sm-6" id="boardPasswordCheckText">
+
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="boardTitle" class="col-sm-2 col-form-label">제목 * </label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="boardTitle" name="boardTitle">
+                        <input type="text" class="form-control" id="boardTitle" name="boardTitle" minlength="4" maxlength="99" required>
                     </div>
                 </div>
                 <div class="mb-3 row">
                     <label for="boardContent" class="col-sm-2 col-form-label">내용 * </label>
                     <div class="col-sm-10">
-                <textarea class="form-control" id="boardContent" name="boardContent" rows="7">
-                </textarea>
+                <textarea class="form-control" id="boardContent" name="boardContent" rows="7" minlength="4" maxlength="1999" required></textarea>
                     </div>
                 </div>
                 <div class="mb-3 row">
@@ -101,7 +146,7 @@
             </div>
             <div class="col-sm-2">
                 <div class="d-grid gap-2">
-                    <button class="btn btn-success" type="button">저장</button>
+                    <input type="submit" class="btn btn-success" id="boardSubmit" value="저장" disabled/>
                 </div>
             </div>
         </div>
