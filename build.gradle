@@ -22,26 +22,27 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-  //  기존
-  compileOnly('javax.servlet:javax.servlet-api:4.0.1')
-  testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
-  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    //  기존
+    compileOnly('javax.servlet:javax.servlet-api:4.0.1')
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 //  lombok
-  implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
-  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
-  testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
+    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
 //  MySQL
-  implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.27'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.27'
 //  hikariCP
-  implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.0.0'
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.0.0'
 //  log4j
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
-  testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.14.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
+    testImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.14.1'
 //   modelmapper
-  implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.4.4'
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.4.4'
 //    jstl
-  implementation group: 'javax.servlet', name: 'jstl', version: '1.2'
+    implementation group: 'javax.servlet', name: 'jstl', version: '1.2'
+
 }
 
 test {

@@ -22,5 +22,15 @@ public class BoardDTO {
     private int categoryNum;
     private String categoryName;
 
+    private int fileNum;
+    private String fileOriginName;
+    private String fileUuidName;
+    private String fileDeleteState;
+
+    private int commentsNum;
+    private String commentsWriter;
+    private String commentsPassword;
+    private String commentsContent;
+    private String commentsRegisterDate;
 
 }
