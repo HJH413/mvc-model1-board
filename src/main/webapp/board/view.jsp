@@ -74,7 +74,41 @@
                 }
             });
         });
+
     });
+
+    const deleteCommentsFormData = (num) => {
+
+        let commentsPasswordId = 'commentsPassword'+num;
+        let commentsNumId = 'commentsNum'+num;
+
+        let commentsPassword = document.getElementById(commentsPasswordId).value;
+
+        let data = {
+            commentsNum : document.getElementById(commentsNumId).value,
+            commentsPassword : document.getElementById(commentsPasswordId).value
+        }
+
+        if(commentsPassword == ''){
+            alert('댓글 삭제 비번 입력 ㄱ');
+        } else {
+            $.ajax({
+                type: "post",
+                url: "./api/deleteComments.jsp",
+                data: data,
+                success: function (data) {
+                    console.log("댓글 작성 완료");
+                },
+                error: function (request, status, error) {
+                    console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                },
+                complete: function () {
+                    location.reload();
+                }
+            });
+        }
+
+    }
 
     </script>
 </head>
@@ -146,7 +180,7 @@
                             </div>
                             <div class="col-sm-2">
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                    <button class="btn btn-danger" type="button">삭제</button>
+                                    <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop<%= comments.getCommentsNum()%>">삭제</button>
                                 </div>
                             </div>
                         </div>
@@ -155,6 +189,33 @@
                                    readonly>
                         </div>
                         <hr/>
+                        <!-- password check Modal -->
+                        <div class="modal fade" id="staticBackdrop<%= comments.getCommentsNum()%>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <form id="commentsDeleteForm<%= comments.getCommentsNum()%>">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">댓글 삭제?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label for="commentsPassword<%= comments.getCommentsNum()%>" class="col-sm-2 col-form-label">비밀번호 </label>
+                                        <div class="col-sm-10">
+                                            <input type="hidden" id="commentsNum<%= comments.getCommentsNum()%>" name="commentsNum" value="<%= comments.getCommentsNum()%>">
+                                            <input type="password" class="form-control" id="commentsPassword<%= comments.getCommentsNum()%>"
+                                                   name="commentsPassword"
+                                                   minlength="4" maxlength="15"
+                                                   required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                        <button type="button" class="btn btn-primary" onclick="deleteCommentsFormData('<%= comments.getCommentsNum()%>')">확인</button>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                         <%
                             }
                         %>
@@ -233,5 +294,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>

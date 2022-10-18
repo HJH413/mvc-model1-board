@@ -168,7 +168,7 @@ public class BoardDAO {
 
         String sql = "SELECT file_origin_name, file_uuid_name, board_num" +
                      " FROM study.file " +
-                     "WHERE board_num = ?";
+                     "WHERE board_num = ? AND file_delete_state = 'N' ";
 
         try {
             statement = connection.prepareStatement(sql);
@@ -246,7 +246,7 @@ public class BoardDAO {
         ResultSet resultSet = null;
 
         String sql = "SELECT comments_num, comments_writer, comments_content, comments_register_date " +
-                     "FROM study.comments WHERE board_num = ? " +
+                     "FROM study.comments WHERE board_num = ? AND comments_delete_state = 'N' " +
                      "ORDER BY comments_register_date DESC";
 
         try {
@@ -300,6 +300,35 @@ public class BoardDAO {
 
         return categoryDTOList;
     }
+
+    public int commentsStateUpdate(int commentsNum, String commentsPassword) {
+
+        SHA256 sha256 = new SHA256();
+        PreparedStatement statement = null;
+
+        String sql = "UPDATE study.comments " +
+                     "SET comments_delete_state = 'Y'" +
+                     "WHERE comments_num = ? " +
+                     "AND comments_password = ?";
+
+        int result = 0;
+
+        try {
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, commentsNum);
+            String cryptogramPassword = sha256.encrypt(commentsPassword);
+            statement.setString(2, cryptogramPassword);
+            result = statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(statement, null);
+        }
+        return result;
+    }
+
+
+
 
     /**
      * 연결 객체를 종료 시키는 메소드
