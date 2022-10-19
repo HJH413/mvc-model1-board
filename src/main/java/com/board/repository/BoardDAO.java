@@ -95,7 +95,7 @@ public class BoardDAO {
 
     /**
      * U 게시글 내용 업데이트
-     * @param boardDTO
+     * @param boardDTO 저장할 내용을 담아 놓은 DTO
      */
     public void boardModify(BoardDTO boardDTO){
 
@@ -180,7 +180,12 @@ public class BoardDAO {
             close(statement, null);
         }
     }
-    //todo 페이징
+
+    /**
+     * R 게시글 목록 불러오기
+     * @return 게시글 목록 전달
+     * todo 페이징
+     */
     public List<BoardDTO> boardList() {
 
         PreparedStatement statement = null;
@@ -227,6 +232,8 @@ public class BoardDAO {
 
         return boardList;
     }
+
+    //todo 검색기능 구현
 
     /**
      * C 파일 정보를 db에 적재
@@ -516,34 +523,6 @@ public class BoardDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    /**
-     * 복호화한 비밀번호 채크
-     *
-     * @param password
-     */
-    public void passwordCheck(String password) {
-
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        SHA256 sha256 = new SHA256();
-
-        String sql = "SELECT board_title FROM study.board WHERE board_password = ?";
-
-        try {
-            Connection connection = DataBaseConnection.getDatabaseConnection();
-            //ResultSet에 사용할 수 있는 상수(TYPE_SCROLL_INSENSITIVE, CONCUR_READ_ONLY)
-            statement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            String cryptogramPassword = sha256.encrypt(password);
-            statement.setString(1, cryptogramPassword);
-            resultSet = statement.executeQuery();
-            resultSet.last();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            this.close(statement, resultSet);
         }
     }
 
