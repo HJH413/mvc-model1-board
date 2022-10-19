@@ -123,14 +123,23 @@
                     <label class="col-sm-2 col-form-label">파일첨부</label>
                     <div class="col-sm-10">
                         <div class="row">
-                            <div class="col-sm-12" style="margin-bottom: 10px;">
+                            <div class="col-sm-6" style="margin-bottom: 10px;">
                                 <input class="form-control" type="file" id="boardfile1" name="boardfile1">
                             </div>
-                            <div class="col-sm-12" style="margin-bottom: 10px;">
+                            <div class="col-sm-6" style="margin-bottom: 10px;">
+
+                            </div>
+                            <div class="col-sm-6" style="margin-bottom: 10px;">
                                 <input class="form-control" type="file" id="boardfile2" name="boardfile2">
                             </div>
-                            <div class="col-sm-12" style="margin-bottom: 10px;">
+                            <div class="col-sm-6" style="margin-bottom: 10px;">
+
+                            </div>
+                            <div class="col-sm-6" style="margin-bottom: 10px;">
                                 <input class="form-control" type="file" id="boardfile3" name="boardfile3">
+                            </div>
+                            <div class="col-sm-6" style="margin-bottom: 10px;">
+
                             </div>
                         </div>
                     </div>

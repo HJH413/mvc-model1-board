@@ -8,27 +8,27 @@
     BoardDAO boardDAO = new BoardDAO();
     BoardDTO boardDTO = new BoardDTO();
 
-    //int boardNum = Integer.parseInt(request.getParameter("boardNum"));
-    boardDAO.boardHits(3);
-    boardDTO = boardDAO.boardView(3);
-    List<BoardDTO> boardFileList = boardDAO.boardFileList(3);
+    int boardNum = Integer.parseInt(request.getParameter("boardNum"));
+    boardDAO.boardHits(boardNum);
+    boardDTO = boardDAO.boardView(boardNum);
+    List<BoardDTO> boardFileList = boardDAO.boardFileList(boardNum);
 
-    int boardNum = boardDTO.getBoardNum();
+
     String boardWriter = boardDTO.getBoardWriter();
     String boardTittle = boardDTO.getBoardTittle();
     String boardContent = boardDTO.getBoardContent();
     String categoryName = boardDTO.getCategoryName();
     int boardHits = boardDTO.getBoardHits();
     String boardRegisterDate = boardDTO.getBoardRegisterDate().substring(0, boardDTO.getBoardRegisterDate().length() - 3);
-    String boardUpdateDate = boardDTO.getBoardUpdateDate();
+    String boardUpdateDate = "";
 
-    if (boardUpdateDate == null) {
-        boardUpdateDate = "-";
+    if(boardDTO.getBoardUpdateDate() != null){
+        boardUpdateDate = boardDTO.getBoardUpdateDate().substring(0, boardDTO.getBoardUpdateDate().length() - 3);
     } else {
-        boardUpdateDate.substring(0, boardUpdateDate.length() - 3);
+        boardUpdateDate = "-";
     }
 
-    List<BoardDTO> boardCommentsList = boardDAO.boardCommentsList(3);
+    List<BoardDTO> boardCommentsList = boardDAO.boardCommentsList(boardNum);
 %>
 
 <html lang="ko">
@@ -96,8 +96,8 @@
                 type: "post",
                 url: "./api/deleteComments.jsp",
                 data: data,
-                success: function (data) {
-                    console.log("댓글 작성 완료");
+                success: function (result) {
+                    console.log("댓글 삭제 완료", result);
                 },
                 error: function (request, status, error) {
                     console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -168,7 +168,7 @@
             <div class="card-body">
                 <div><%--댓글 내용--%>
                     <div id="commentsListDiv">
-                        <% if(boardCommentsList == null) { %>
+                        <% if(boardCommentsList.size() == 0) { %>
                         작성된 댓글이 없습니다.
                         <% } else { %>
                         <%
@@ -221,6 +221,7 @@
                         %>
                         <% } %>
                     </div>
+                    <% if(boardCommentsList.size() != 0) { %>
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             <li class="page-item">
@@ -238,6 +239,7 @@
                             </li>
                         </ul>
                     </nav>
+                    <% }%>
                     <hr/>
                     <form id="commentsForm">
                         <input type="hidden" name="boardNum" id="boardNum" value="<%=boardNum%>">
@@ -285,12 +287,12 @@
     </div>
     <div class="col-sm-2">
         <div class="d-grid gap-2">
-            <button class="btn btn-info" type="button" onclick="location.href='./modify.jsp'">수정</button>
+            <button class="btn btn-info" type="button" onclick="location.href='./modify.jsp?boardNum=<%=boardNum%>'">수정</button>
         </div>
     </div>
     <div class="col-sm-2">
         <div class="d-grid gap-2">
-            <button class="btn btn-danger" type="button">삭제</button>
+            <button class="btn btn-danger" type="button" onclick="location.href='./api/deleteBoardCheck.jsp?boardNum=<%=boardNum%>'">삭제</button>
         </div>
     </div>
 </div>

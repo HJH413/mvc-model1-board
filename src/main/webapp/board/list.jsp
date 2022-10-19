@@ -1,6 +1,7 @@
 <%@ page import="com.board.repository.BoardDAO" %>
 <%@ page import="com.board.dto.CategoryDTO" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.board.dto.BoardDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="ko">
 <head>
@@ -12,6 +13,9 @@
     <%
         BoardDAO boardDAO = new BoardDAO();
         List<CategoryDTO> categoryList = boardDAO.categoryList();
+        List<BoardDTO> boardList = boardDAO.boardList();
+
+        int ListSize = boardList.size();
 
     %>
     <%@ include file="include/source.jsp" %>
@@ -59,33 +63,32 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <table class="table table-hover">
+                <table class="table table-hover caption-top">
+                    <caption>총 <%=ListSize%>건</caption>
                     <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                    <tr class="text-center">
+                        <th scope="col" style="width: 10%">카테고리</th>
+                        <th scope="col" style="width: 45%">제목</th>
+                        <th scope="col" style="width: 10%">작성자</th>
+                        <th scope="col" style="width: 5%">조회수</th>
+                        <th scope="col" style="width: 15%">등록 일시</th>
+                        <th scope="col" style="width: 15%">수정 일시</th>
                     </tr>
                     </thead>
                     <tbody>
+                    <% for (BoardDTO board : boardList) { %>
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <td class="text-center"><%=board.getCategoryName()%></td>
+                        <td><%if(board.getBoardFileState().equals("Y")) { %>
+                            <i class="fa-regular fa-file"></i>
+                            <% } %>
+                            <a href = "./view.jsp?boardNum=<%=board.getBoardNum()%>"><%=board.getBoardTittle()%></a></td>
+                        <td class="text-center"><%=board.getBoardWriter()%></td>
+                        <td class="text-center"><%=board.getBoardHits()%></td>
+                        <td class="text-center"><%=board.getBoardRegisterDate()%></td>
+                        <td class="text-center"><%=board.getBoardUpdateDate()%></td>
                     </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
+                    <% }%>
                     </tbody>
                 </table>
             </div>
@@ -108,8 +111,7 @@
             </nav>
             <div class="d-grid gap-2">
                 <button class="btn btn-outline-dark" type="button" onclick="location.href='./write.jsp'">글 작성</button>
-                <button class="btn btn-outline-dark" type="button" onclick="location.href='./view.jsp'">보기</button>
-                <button class="btn btn-outline-dark" type="button" onclick="location.href='./modify.jsp'">수정</button>
+                <button class="btn btn-outline-dark" type="button" onclick="location.href='test.jsp'">테스트페이지</button>
             </div>
         </div>
     </div>
